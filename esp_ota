@@ -1,0 +1,49 @@
+//OTA over AsynElagant OTA
+#include <Arduino.h>
+#include <WiFi.h>
+//Headers for OTA update over AsyncElegant Web Server
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncElegantOTA.h>
+#include <WiFiMulti.h>
+#include <HTTPClient.h>
+WiFiMulti wifiMulti;
+HTTPClient ask;
+// TODO: user config
+const char* ssid = "*****";
+const char* password = "****";
+void attempting_to_send_data_to_cloud_using_wifi();
+AsyncWebServer server(8888); //port for Web server
+void setup(void) {
+  Serial.begin(9600); // open serial
+  while (!Serial);    // Do nothing if no serial port is opened
+  Serial.println("Wait for WiFi... ");
+
+  
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.println("");
+  while (WiFi.status() != WL_CONNECTED) {       // Wait for connection
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.print("Scan RFID");
+  pinMode(greenLED, OUTPUT);
+  pinMode(redLED, OUTPUT);
+    
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {  //Web server initilization
+    request->send(200, "text/plain", "Hi! I am ESP32.");
+  });
+  AsyncElegantOTA.begin(&server);    // Start ElegantOTA
+  server.begin();
+  Serial.println("HTTP server started");
+  }
+  void loop(void) {
+  AsyncElegantOTA.loop(); //OTA running
+  attempting_to_send_data_to_cloud_using_wifi();
+}
