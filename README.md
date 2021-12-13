@@ -1,5 +1,5 @@
 # ESP32 OTA update over Internet
-Perform OTA update for ESP32 outside local network using NGROK port forwarding
+Perform OTA update for ESP32 outside local network using Async Webserver and NGROK port forwarding
 ## Header files
 - #include <AsyncTCP.h>
 - #include <ESPAsyncWebServer.h>
