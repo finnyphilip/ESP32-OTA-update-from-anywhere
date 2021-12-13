@@ -43,7 +43,8 @@ void setup(void) {
   server.begin();
   Serial.println("HTTP server started");
   }
-  void loop(void) {
+  void loop(void) 
+  {
   AsyncElegantOTA.loop(); //OTA running
   attempting_to_send_data_to_cloud_using_wifi();
-}
+  }
